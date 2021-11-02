@@ -3,45 +3,83 @@
 //
 
 #include "Processing.h"
+#include "CUDA_check.h"
+
+#define CUDA_CHECK_RETURN(value) CheckCudaErrorAux(__FILE__,__LINE__, #value, value)
+
+__global__ void
+kernel(unsigned char *input, unsigned long long int *krn, unsigned char *output, int height, int width, int channels,
+       int size, double weight) {
+    int iy = blockIdx.y * blockDim.y + threadIdx.y;
+    int ix = blockIdx.x * blockDim.x + threadIdx.x;
+
+    if (iy < height && ix < width) {
+        int kCenter = size / 2;
+        int dx, dy, px, py;
+
+        for (int ic = 0; ic < channels; ic++) {
+            // vars "i?" identify image's element
+            unsigned long long int newVal = 0;
+            for (int ky = 0; ky < size; ky++) {
+                for (int kx = 0; kx < size; kx++) {
+                    // vars "k?" identify kernel's element
+                    dx = kx - kCenter;
+                    dy = ky - kCenter;
+                    // vars "d?" identify kernel's element's position with respect to the center
+                    px = ix + dx;
+                    py = iy + dy;
+                    // vars "p?" identify the pixel to combine with kernel's element
+
+                    if (px < 0 || px >= width) {      // edge handling: extend
+                        px = (px < 0) ? 0 : (width - 1);
+                    }
+                    if (py < 0 || py >= height) {
+                        py = (py < 0) ? 0 : (height - 1);
+                    }
+
+                    newVal += (unsigned long long int) input[py * width * channels + px * channels + ic] *
+                              krn[ky * size + kx];
+                }
+            }
+            newVal = (unsigned long long int) ((long double) newVal * weight);
+            output[iy * width * channels + ix * channels + ic] = (unsigned char) newVal;
+        }
+    }
+}
 
 Image *process(Image *img, Kernel *krn) {
     Image *res = Image_new_empty(img->width, img->height, img->channels);
 
-    unsigned long long int newVal;
-    int kCenter = krn->size / 2;
-    int dx, dy, px, py;
+    unsigned char *d_input;
+    unsigned long long int *d_krn;
+    unsigned char *d_output;
 
-    for (int iy = 0; iy < img->height; iy++) {
-        for (int ix = 0; ix < img->width; ix++) {
-            for (int ic = 0; ic < img->channels; ic++) {
-                // vars "i?" identify image's element
-                newVal = 0;
-                for (int ky = 0; ky < krn->size; ky++) {
-                    for (int kx = 0; kx < krn->size; kx++) {
-                        // vars "k?" identify kernel's element
-                        dx = kx - kCenter;
-                        dy = ky - kCenter;
-                        // vars "d?" identify kernel's element's position with respect to the center
-                        px = ix + dx;
-                        py = iy + dy;
-                        // vars "p?" identify the pixel to combine with kernel's element
+    CUDA_CHECK_RETURN(cudaMalloc((void **) &d_input, sizeof(unsigned char) * img->width * img->height * img->channels));
+    CUDA_CHECK_RETURN(cudaMalloc((void **) &d_krn, sizeof(unsigned long long int) * krn->size * krn->size));
+    CUDA_CHECK_RETURN(
+            cudaMalloc((void **) &d_output, sizeof(unsigned char) * img->width * img->height * img->channels));
 
-                        if (px < 0 || px >= img->width) {      // edge handling: extend
-                            px = (px < 0) ? 0 : (img->width - 1);
-                        }
-                        if (py < 0 || py >= img->height) {
-                            py = (py < 0) ? 0 : (img->height - 1);
-                        }
+    CUDA_CHECK_RETURN(cudaMemcpy((void *) d_input, (void *) img->data,
+                                 sizeof(unsigned char) * img->width * img->height * img->channels,
+                                 cudaMemcpyHostToDevice));
+    CUDA_CHECK_RETURN(cudaMemcpy((void *) d_krn, (void *) krn->coefficients,
+                                 sizeof(unsigned long long int) * krn->size * krn->size,
+                                 cudaMemcpyHostToDevice));
 
-                        newVal += (unsigned long long int) Image_getPixel(img, px, py, ic) *
-                                  Kernel_getCoefficient(krn, ky, kx);
-                    }
-                }
-                newVal = (unsigned long long int) ((long double) newVal * krn->weight);
-                Image_setPixel(res, ix, iy, ic, (unsigned char) newVal);
-            }
-        }
-    }
+    dim3 blockDim(32, 32);
+    dim3 gridDim(ceil(((float) img->width) / blockDim.x), ceil(((float) img->height) / blockDim.y));
+
+    kernel<<<gridDim, blockDim>>>(d_input, d_krn, d_output, img->height, img->width, img->channels, krn->size,
+                                  krn->weight);
+    cudaDeviceSynchronize();
+
+    CUDA_CHECK_RETURN(cudaMemcpy((void *) res->data, (void *) d_output,
+                                 sizeof(unsigned char) * img->width * img->height * img->channels,
+                                 cudaMemcpyDeviceToHost));
+
+    cudaFree(d_input);
+    cudaFree(d_krn);
+    cudaFree(d_output);
 
     return res;
 }

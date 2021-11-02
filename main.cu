@@ -10,11 +10,11 @@
 /**
  * Min value of kernel dimension to test (MUST be odd)
  */
-const int KERNEL_DIM_MIN = 3;
+const int KERNEL_DIM_MIN = 25;
 /**
  * Max value of kernel dimension to test (MUST be odd)
  */
-const int KERNEL_DIM_MAX = 3;
+const int KERNEL_DIM_MAX = 25;
 /**
  * Step on values of kernel dimension (MUST be even)
  */
@@ -51,7 +51,7 @@ int main() {
         Kernel *krn = Kernel_gaussianBlur(k);
         for (int imageIndex = 1; imageIndex <= IMAGE_QUANTITY; imageIndex++) {
             char *inFilename = (char *) malloc(sizeof(char) * 100);
-            sprintf(inFilename, "/home/kevin/CLionProjects/Image_Kernel_Processing/Image/Input/%s-%d.jpg",
+            sprintf(inFilename, "/home/kevin/CLionProjects/Image_Kernel_Processing-CUDA/Image/Input/%s-%d.jpg",
                     IMAGE_DIMENSION, imageIndex);
             Image *img = loadJPEG(inFilename);
             Image *res = NULL;
@@ -73,7 +73,7 @@ int main() {
             }
 
             char *outFilename = (char *) malloc(sizeof(char) * 100);
-            sprintf(outFilename, "/home/kevin/CLionProjects/Image_Kernel_Processing/Image/Output/%s-%d-processed%d.png",
+            sprintf(outFilename, "/home/kevin/CLionProjects/Image_Kernel_Processing-CUDA/Image/Output/%s-%d-processed%d.png",
                     IMAGE_DIMENSION, imageIndex, k);
             savePNG(outFilename, res);
 
@@ -92,7 +92,7 @@ int main() {
     }
 
     char *filename = (char *) malloc(sizeof(char) * 100);
-    sprintf(filename, "/home/kevin/CLionProjects/Image_Kernel_Processing/Image/Output/Times/%sExecTimes.txt",
+    sprintf(filename, "/home/kevin/CLionProjects/Image_Kernel_Processing-CUDA/Image/Output/Times/%sExecTimes.txt",
             IMAGE_DIMENSION);
     saveTextFile(kDim, times, filename);
 
