@@ -181,7 +181,7 @@ kernel(unsigned char *input, const unsigned long long int *__restrict__ krn, uns
 
     // utility values
     int kRadius = size / 2;
-    int batches = (w * w) / (TILE_WIDTH * TILE_WIDTH);
+    int batches = (w * w) / (TILE_WIDTH * TILE_WIDTH) + 1;  // ceiling
 
     // vars instantiation
     int dest, destY, destX, srcY, srcX;
@@ -285,7 +285,7 @@ kernel(unsigned char *input, unsigned char *output, int height,
 
     // utility values
     int kRadius = size / 2;
-    int batches = (w * w) / (TILE_WIDTH * TILE_WIDTH);
+    int batches = (w * w) / (TILE_WIDTH * TILE_WIDTH) + 1;  // ceiling
 
     int dest, destY, destX, srcY, srcX;
     unsigned long long int newVal;
