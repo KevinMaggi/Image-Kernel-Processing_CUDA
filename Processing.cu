@@ -269,7 +269,7 @@ Image *process(Image *img, Kernel *krn) {
 #endif
 
 #if defined CONSTANT_MEMORY && defined SHARED_MEMORY
-#define TILE_WIDTH BLOCK_SIZE
+#define TILE_WIDTH 16
 __constant__ unsigned long long int KERNEL[25 * 25];
 
 __global__ void
