@@ -1,0 +1,103 @@
+########## NOT PINNED ##########
+==3995== Profiling application: ./cmake-build-release/Image_Kernel_Processing_CUDA
+==3995== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   95.97%  12.4967s         6  2.08278s  2.07827s  2.09561s  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int)
+                    2.12%  275.63ms        12  22.969ms  1.9200us  49.096ms  [CUDA memcpy HtoD]
+                    1.92%  249.44ms         6  41.573ms  41.412ms  41.848ms  [CUDA memcpy DtoH]
+      API calls:   94.69%  12.4969s         6  2.08282s  2.07831s  2.09566s  cudaDeviceSynchronize
+                    3.97%  524.56ms        12  43.714ms  41.954ms  48.482ms  cudaMemcpy
+                    0.98%  129.54ms        12  10.795ms  186.67us  115.89ms  cudaMalloc
+                    0.31%  41.372ms        12  3.4477ms  172.72us  6.7528ms  cudaFree
+                    0.04%  5.4556ms         6  909.27us  898.49us  921.09us  cudaMemcpyToSymbol
+                    0.00%  182.36us       101  1.8050us     140ns  79.760us  cuDeviceGetAttribute
+                    0.00%  127.08us         6  21.179us  20.440us  22.863us  cudaLaunchKernel
+                    0.00%  86.670us         1  86.670us  86.670us  86.670us  cuDeviceTotalMem
+                    0.00%  32.423us         1  32.423us  32.423us  32.423us  cuDeviceGetName
+                    0.00%  8.0830us         1  8.0830us  8.0830us  8.0830us  cuDeviceGetPCIBusId
+                    0.00%  1.1270us         3     375ns     163ns     777ns  cuDeviceGetCount
+                    0.00%     788ns         2     394ns     152ns     636ns  cuDeviceGet
+                    0.00%     319ns         1     319ns     319ns     319ns  cuDeviceGetUuid
+
+########## PINNED ##########
+==4168== Profiling application: ./cmake-build-release/Image_Kernel_Processing_CUDA
+==4168== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   96.16%  12.5092s         6  2.08486s  2.07835s  2.09518s  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int)
+                    1.94%  253.01ms        12  21.084ms  1.8880us  42.276ms  [CUDA memcpy HtoD]
+                    1.90%  246.98ms         6  41.163ms  41.064ms  41.258ms  [CUDA memcpy DtoH]
+      API calls:   91.33%  12.5109s         6  2.08515s  2.07840s  2.09519s  cudaDeviceSynchronize
+                    3.65%  500.45ms        12  41.705ms  41.105ms  42.318ms  cudaMemcpy
+                    3.28%  448.69ms        15  29.912ms  19.531ms  144.14ms  cudaMallocHost
+                    1.41%  193.79ms         9  21.532ms  13.888ms  32.501ms  cudaFreeHost
+                    0.30%  41.385ms        12  3.4487ms  182.79us  6.7427ms  cudaFree
+                    0.02%  3.1542ms        12  262.85us  200.62us  420.14us  cudaMalloc
+                    0.00%  272.91us       101  2.7020us     238ns  118.08us  cuDeviceGetAttribute
+                    0.00%  151.29us         6  25.214us  23.176us  29.095us  cudaLaunchKernel
+                    0.00%  126.07us         6  21.011us  16.577us  30.295us  cudaMemcpyToSymbol
+                    0.00%  125.25us         1  125.25us  125.25us  125.25us  cuDeviceTotalMem
+                    0.00%  49.943us         1  49.943us  49.943us  49.943us  cuDeviceGetName
+                    0.00%  7.0880us         1  7.0880us  7.0880us  7.0880us  cuDeviceGetPCIBusId
+                    0.00%  2.6600us         3     886ns     406ns  1.3470us  cuDeviceGetCount
+                    0.00%  1.7860us         2     893ns     435ns  1.3510us  cuDeviceGet
+                    0.00%     561ns         1     561ns     561ns     561ns  cuDeviceGetUuid
+
+
+########## NOT PINNED ##########
+==3925== Profiling application: ./cmake-build-release/Image_Kernel_Processing_CUDA
+==3925== Profiling result:
+   Start  Duration            Grid Size      Block Size     Regs*    SSMem*    DSMem*      Size  Throughput  SrcMemType  DstMemType           Device   Context    Stream  Name
+266.04ms  42.897ms                    -               -         -         -         -  68.665MB  1.5632GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+308.95ms  2.0160us                    -               -         -         -         -  4.8828KB  2.3098GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+308.97ms  2.08957s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [115]
+2.39858s  41.058ms                    -               -         -         -         -  68.665MB  1.6332GB/s      Device    Pageable  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+2.45411s  48.281ms                    -               -         -         -         -  68.665MB  1.3888GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+2.50245s  1.8880us                    -               -         -         -         -  4.8828KB  2.4664GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+2.50246s  2.07863s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [124]
+4.58113s  41.273ms                    -               -         -         -         -  68.665MB  1.6247GB/s      Device    Pageable  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+11.4115s  43.449ms                    -               -         -         -         -  68.665MB  1.5433GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+11.4551s  1.9200us                    -               -         -         -         -  4.8828KB  2.4253GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+11.4551s  2.07859s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [133]
+13.5337s  41.131ms                    -               -         -         -         -  68.665MB  1.6303GB/s      Device    Pageable  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+13.5894s  48.780ms                    -               -         -         -         -  68.665MB  1.3746GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+13.6382s  1.9200us                    -               -         -         -         -  4.8828KB  2.4253GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+13.6382s  2.07852s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [142]
+15.7168s  41.371ms                    -               -         -         -         -  68.665MB  1.6208GB/s      Device    Pageable  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+21.4863s  43.145ms                    -               -         -         -         -  68.665MB  1.5542GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+21.5295s  1.9200us                    -               -         -         -         -  4.8828KB  2.4253GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+21.5295s  2.07367s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [151]
+23.6032s  42.534ms                    -               -         -         -         -  68.665MB  1.5765GB/s      Device    Pageable  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+23.6604s  49.439ms                    -               -         -         -         -  68.665MB  1.3563GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+23.7099s  1.8880us                    -               -         -         -         -  4.8828KB  2.4664GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+23.7099s  2.05985s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [160]
+25.7699s  41.212ms                    -               -         -         -         -  68.665MB  1.6271GB/s      Device    Pageable  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+
+########## NOT PINNED ##########
+==4188== Profiling application: ./cmake-build-release/Image_Kernel_Processing_CUDA
+==4188== Profiling result:
+   Start  Duration            Grid Size      Block Size     Regs*    SSMem*    DSMem*      Size  Throughput  SrcMemType  DstMemType           Device   Context    Stream  Name
+345.73ms  42.043ms                    -               -         -         -         -  68.665MB  1.5949GB/s      Pinned      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+387.80ms  1.9840us                    -               -         -         -         -  4.8828KB  2.3471GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+387.83ms  2.07647s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [118]
+2.46434s  41.204ms                    -               -         -         -         -  68.665MB  1.6274GB/s      Device      Pinned  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+2.58240s  42.155ms                    -               -         -         -         -  68.665MB  1.5907GB/s      Pinned      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+2.62464s  1.9840us                    -               -         -         -         -  4.8828KB  2.3471GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+2.62464s  2.07587s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [130]
+4.70056s  41.033ms                    -               -         -         -         -  68.665MB  1.6342GB/s      Device      Pinned  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+11.3154s  42.282ms                    -               -         -         -         -  68.665MB  1.5859GB/s      Pinned      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+11.3578s  6.9440us                    -               -         -         -         -  4.8828KB  686.69MB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+11.3578s  2.07703s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [144]
+13.4349s  41.111ms                    -               -         -         -         -  68.665MB  1.6311GB/s      Device      Pinned  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+13.5545s  42.106ms                    -               -         -         -         -  68.665MB  1.5925GB/s      Pinned      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+13.5967s  1.9520us                    -               -         -         -         -  4.8828KB  2.3856GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+13.5967s  2.08121s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [156]
+15.6783s  41.516ms                    -               -         -         -         -  68.665MB  1.6152GB/s      Device      Pinned  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+21.6789s  42.229ms                    -               -         -         -         -  68.665MB  1.5879GB/s      Pinned      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+21.7212s  1.9840us                    -               -         -         -         -  4.8828KB  2.3471GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+21.7212s  2.08305s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [170]
+23.8043s  41.174ms                    -               -         -         -         -  68.665MB  1.6286GB/s      Device      Pinned  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+23.9230s  42.233ms                    -               -         -         -         -  68.665MB  1.5877GB/s      Pinned      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+23.9654s  1.9520us                    -               -         -         -         -  4.8828KB  2.3856GB/s    Pageable      Device  GeForce 940MX (         1         7  [CUDA memcpy HtoD]
+23.9654s  2.07012s          (375 250 1)       (16 16 1)        40        0B  1.5625KB         -           -           -           -  GeForce 940MX (         1         7  kernel(unsigned char*, unsigned char*, int, int, int, int, double, int) [182]
+26.0355s  40.873ms                    -               -         -         -         -  68.665MB  1.6406GB/s      Device      Pinned  GeForce 940MX (         1         7  [CUDA memcpy DtoH]
+
